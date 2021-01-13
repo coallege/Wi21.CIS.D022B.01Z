@@ -71,6 +71,37 @@ int main() {
       int Bx, By;
       cin >> Bx >> By;
 
+      // what happens if the user enters a value that is
+      // too large for the coordinates?
+      // the program will break.
+      // we have to check to make sure it's not
+      if (
+         // check lower bounds first
+            Ax < 0
+         || Ay < 0
+         || Bx < 0
+         || By < 0
+         // check if x is too high
+         || Ax >= LENGTH
+         || Bx >= LENGTH
+         // check if y is too high
+         || Ay >= HEIGHT
+         || By >= HEIGHT
+      ) {
+         cout << "Invalid coordinate pairs!\n";
+         cout << "The lowest pair is (0, 0)\n";
+         cout << "The highest pair is (" << LENGTH - 1 << ", " << HEIGHT - 1 << ")\n";
+         cout << "Try again!\n";
+
+         // ignore the error
+         cin.clear();
+         // ignore all input
+         cin.ignore();
+
+         // go back to the start of the loop
+         continue;
+      }
+
       // Step 4c
       int cardA = cards[Ay][Ax];
       int cardB = cards[By][Bx];
@@ -126,7 +157,9 @@ int main() {
 }
 
 void ShowCards(int cards[][LENGTH], bool faceup[][LENGTH]) {
+   cout << ". 0 1 2--X\n";
    for (int y = 0; y < HEIGHT; y++) {
+      cout << y << ' ';
       for (int x = 0; x < LENGTH; x++) {
          if (faceup[y][x]) {
             cout << cards[y][x] << ' ';
@@ -137,6 +170,7 @@ void ShowCards(int cards[][LENGTH], bool faceup[][LENGTH]) {
       // we are done printing the row, add a newline
       cout << '\n';
    }
+   cout << "|\nY\n";
 }
 
 /// So how do we know if the game is won?

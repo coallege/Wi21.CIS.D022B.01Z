@@ -25,6 +25,8 @@ int main() {
    cout << "Find all matching pairs on the board!\n";
 
    // Step 2
+   // remember, it's cards[y][x]
+   // cards is an array that holds rows of numbers
    int cards[][LENGTH] = {
       {1, 1, 2},
       {2, 3, 3},
@@ -37,21 +39,21 @@ int main() {
    // do this
    bool faceup[HEIGHT][LENGTH]{};
 
-   #ifdef or_this
-   // has the same meaning as above
+   // same as
+   /*
    bool faceup[][LENGTH] = {
       {false, false, false},
       {false, false, false},
       {false, false, false},
       {false, false, false},
    };
-   #endif
+   */
 
-   #ifdef dont_do_this
    // You don't want to do this because there's no guarantee
    // that this will all be zero or false
+   /*
    bool faceup[HEIGHT][LENGTH];
-   #endif
+   */
 
    int turns = 0;
    // Step 4
@@ -179,14 +181,15 @@ void ShowCards(int cards[][LENGTH], bool faceup[][LENGTH]) {
 bool game_is_won(bool faceup[HEIGHT][LENGTH]) {
    for (int y = 0; y < HEIGHT; y++) {
       for (int x = 0; x < LENGTH; x++) {
-         /** Same as
-         if (faceup[y][x] == false) {
-            return false;
-         }
-         */
          if (!faceup[y][x]) {
             return false;
          }
+         // is the same as
+         /*
+         if (faceup[y][x] == false) {
+           return false;
+         }
+         */
       }
    }
 

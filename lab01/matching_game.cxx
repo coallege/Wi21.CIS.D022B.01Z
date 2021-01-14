@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstdlib>
 using namespace std;
 
 static const auto LENGTH = 3;
@@ -9,10 +8,8 @@ static const auto HEIGHT = 4;
 
 void InitializeCards(int cards[][LENGTH]);
 void ShowCards(int cards[][LENGTH], bool faceup[][LENGTH]);
+bool GameIsWon(bool faceup[HEIGHT][LENGTH]);
 int main();
-
-// my own function
-bool game_is_won(bool faceup[HEIGHT][LENGTH]);
 
 int main() {
    // Step 1
@@ -107,18 +104,17 @@ int main() {
       // Step 4c
       int cardA = cards[Ay][Ax];
       int cardB = cards[By][Bx];
+      // Flip the cards face up to show them
+      faceup[Ay][Ax] = true;
+      faceup[By][Bx] = true;
       if (cardA == cardB) {
          cout << "A match has been found!\n";
-         // flip them over forever
-         faceup[Ay][Ax] = true;
-         faceup[By][Bx] = true;
+         // we don't need to flip them face down
+         // since a match was found
       } else {
-         // match was not found
-         // flip them face up
-         faceup[Ay][Ax] = true;
-         faceup[By][Bx] = true;
          // show the cards
          ShowCards(cards, faceup);
+         // a match was not found,
          // flip them face down
          faceup[Ay][Ax] = false;
          faceup[By][Bx] = false;
@@ -128,7 +124,7 @@ int main() {
       turns++;
 
       // Step 4.5?
-      if (game_is_won(faceup)) {
+      if (GameIsWon(faceup)) {
          // write out to a file
          ofstream gamelog("gamelog.txt");
          gamelog << fullname << '\n';
@@ -159,7 +155,7 @@ int main() {
 }
 
 void ShowCards(int cards[][LENGTH], bool faceup[][LENGTH]) {
-   cout << ". 0 1 2--X\n";
+   cout << ". 0 1 2\n";
    for (int y = 0; y < HEIGHT; y++) {
       cout << y << ' ';
       for (int x = 0; x < LENGTH; x++) {
@@ -172,13 +168,12 @@ void ShowCards(int cards[][LENGTH], bool faceup[][LENGTH]) {
       // we are done printing the row, add a newline
       cout << '\n';
    }
-   cout << "|\nY\n";
 }
 
 /// So how do we know if the game is won?
 /// It's if every card is turned face up
 /// Aka if every value in faceup is true
-bool game_is_won(bool faceup[HEIGHT][LENGTH]) {
+bool GameIsWon(bool faceup[HEIGHT][LENGTH]) {
    for (int y = 0; y < HEIGHT; y++) {
       for (int x = 0; x < LENGTH; x++) {
          if (!faceup[y][x]) {
@@ -193,12 +188,15 @@ bool game_is_won(bool faceup[HEIGHT][LENGTH]) {
       }
    }
 
-   // we did not exit the program in the loop.
+   // we did not exit the function in the loop.
    // therefore, every value was true.
    // we have won the game
    return true;
 }
 
+/// this was apparently already given but not to me
+/// since I'm not actually in the class
+/// you can ignore this function
 void InitializeCards(int cards[][LENGTH]) {
    srand(time(nullptr));
    // we're going to swap stuff 10 times

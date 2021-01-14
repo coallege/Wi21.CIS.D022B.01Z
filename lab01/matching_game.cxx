@@ -56,6 +56,9 @@ int main() {
    // Step 4
    // let's loop forever
    while (true) {
+      turns++;
+      cout << "Turn #" << turns << "\n----------\n";
+
       // Step 4a
       ShowCards(cards, faceup);
 
@@ -69,6 +72,20 @@ int main() {
       cout << "Please enter the coordinates for card B: ";
       int Bx, By;
       cin >> Bx >> By;
+
+      // what if the user enters 1 q for the coordinate?
+      // we need to check if reading from cin was bad
+      if (cin.good() == false) {
+         cout << "Bad input, try again.\n";
+
+         // clear the error
+         cin.clear();
+         // ignore all input up until newline
+         cin.ignore(99, '\n');
+
+         // go back to the start of the loop
+         continue;
+      }
 
       // what happens if the user enters a value that is
       // too large for the coordinates?
@@ -92,12 +109,16 @@ int main() {
          cout << "The highest pair is (" << LENGTH - 1 << ", " << HEIGHT - 1 << ")\n";
          cout << "Try again!\n";
 
-         // ignore the error
          cin.clear();
-         // ignore all input
-         cin.ignore();
+         cin.ignore(99, '\n');
 
-         // go back to the start of the loop
+         continue;
+      }
+
+      if (faceup[Ay][Ax] || faceup[By][Bx]) {
+         cout << "You cannot select a card\n";
+         cout << "that is already face up!\n";
+         cout << "Try again!\n";
          continue;
       }
 
@@ -119,9 +140,6 @@ int main() {
          faceup[Ay][Ax] = false;
          faceup[By][Bx] = false;
       }
-
-      // You want to keep track of the turns for what happens below
-      turns++;
 
       // Step 4.5?
       if (GameIsWon(faceup)) {

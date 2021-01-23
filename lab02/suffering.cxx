@@ -1,13 +1,14 @@
 #include <iostream>
-#include <cstdint>
-#include <limits>
+#include <cstdint> // for uint32_t
+#include <limits> // for numeric_limits<streamsize>::max()
 #include <string>
 
 using namespace std;
+// this can be any number datatype, I'm just using uint32
 using u32 = uint32_t;
 
-void enter_students  (u32 student_count, string* names, unsigned **test_scores);
-void display_students(u32 student_count, string* names, unsigned **test_scores);
+void enter_students  (u32 student_count, string* names, u32 **test_scores);
+void display_students(u32 student_count, string* names, u32 **test_scores);
 
 int main() {
    cout << "How many students are there?\n> ";
@@ -20,13 +21,13 @@ int main() {
    }
    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-   string *names     = new string[student_count];
+   string *names = new string[student_count];
    u32 **test_scores = new u32*[student_count];
 
    enter_students  (student_count, names, test_scores);
    display_students(student_count, names, test_scores);
 
-   // this is where we free all the memory
+   // free the memory we used
    delete[] names;
    for (u32 student_idx = 0; student_idx < student_count; ++student_idx) {
       // have to free every single allocation that was done inside
@@ -39,7 +40,7 @@ int main() {
    test_scores = nullptr;
 }
 
-void enter_students(u32 student_count, string* names, unsigned **test_scores) {
+void enter_students(u32 student_count, string* names, u32 **test_scores) {
    // count up to student_count and ask for a name
    // ask for how many tests
    // ask for each test score
